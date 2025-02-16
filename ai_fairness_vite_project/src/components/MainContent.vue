@@ -254,7 +254,10 @@ const inaccuracyData = ref({
 <template>
 
 <div class="main_title">
-  <img src="../assets/logo.png" alt="logo" style="height: 70px;" />
+  <img src="../assets/logo.png" alt="logo" style="height: 120px;" />
+</div>
+
+<div class="main_title">
   <h1>{{ msg }}</h1>
 </div>
 
@@ -523,10 +526,9 @@ const inaccuracyData = ref({
 }
 .main_title {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 20px;
-  margin: 20px 0;
+  align-items: center;
+  margin-bottom: 32px;
 }
 
 .main_title h1 {
