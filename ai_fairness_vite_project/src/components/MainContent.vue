@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { FileIcon, PlayCircleIcon, UploadIcon, CloudIcon, EditIcon } from 'tdesign-icons-vue-next';
 import { MessagePlugin } from 'tdesign-vue-next';
 
@@ -127,6 +127,128 @@ const handleEditPath = () => {
   }
   isEditingPath.value = !isEditingPath.value
 }
+
+// Mock 一致性分析数据
+const consistencyData = ref({
+  summary: "",
+  details: []
+})
+
+// 读取和处理 CSV 数据
+onMounted(async () => {
+  try {
+    const response = await fetch('/data/output_Consistency.csv')
+    const csvText = await response.text()
+    const rows = csvText.split('\n').slice(1) // 跳过标题行
+    
+    // 从第一行数据中获取模型名称
+    const firstRow = rows[0].split(',')
+    const modelName = firstRow[1] // 获取 Model Name 列的值
+    
+    consistencyData.value.details = rows
+      .filter(row => row.trim()) // 过滤空行
+      .map(row => {
+        const [index, modelName, labelName, inconsistencyRate] = row.split(',')
+        return {
+          index,
+          modelName,
+          labelName: formatLabel(labelName),
+          inconsistencyRate: (parseFloat(inconsistencyRate) * 100).toFixed(1) + '%'
+        }
+      })
+      
+    // 计算平均不一致率并更新 summary
+    const avgInconsistency = (consistencyData.value.details.reduce((sum, item) => 
+      sum + parseFloat(item.inconsistencyRate), 0) / consistencyData.value.details.length).toFixed(1)
+    
+    consistencyData.value.summary = `${modelName} model's consistency analysis shows that an average of ${avgInconsistency}% samples per label demonstrate inconsistency.`
+
+    // 读取 Bias_Analysis_Pnum.csv
+    const pnumResponse = await fetch('/data/Bias_Analysis_Pnum.csv')
+    const pnumText = await pnumResponse.text()
+    const pnumRows = pnumText.split('\n').slice(1) // 跳过标题行
+    
+    biasAnalysisData.value.biasAnalysisPnum = pnumRows
+      .filter(row => row.trim())
+      .map(row => {
+        const [modelName, labelCategory, labelNumber, biasedLabelNumber] = row.split(',')
+        return {
+          modelName,
+          labelCategory,
+          labelNumber: parseInt(labelNumber),
+          biasedLabelNumber: parseInt(biasedLabelNumber)
+        }
+      })
+
+    // 计算总的有偏见标签数量
+    const totalBiasedLabels = biasAnalysisData.value.biasAnalysisPnum.reduce(
+      (sum, item) => sum + item.biasedLabelNumber, 
+      0
+    )
+    
+    // 获取模型名称
+    // const modelName = biasAnalysisData.value.biasAnalysisPnum[0].modelName
+
+    // 更新 summary
+    biasAnalysisData.value.summary = `The fairness analysis of ${modelName} shows that among all 65 labels, ${totalBiasedLabels} labels demonstrate significant bias.`
+
+    // 读取 Bias_Analysis_P.csv
+    const pResponse = await fetch('/data/Bias_Analysis_P.csv')
+    const pText = await pResponse.text()
+    const pRows = pText.split('\n').slice(1) // 跳过标题行
+    
+    biasAnalysisData.value.biasAnalysisPdata = pRows
+      .filter(row => row.trim())
+      .map(row => {
+        const [modelName, labelName, labelValue, reference, impact, pValue] = row.split(',')
+        return {
+          modelName,
+          labelName: formatLabel(labelName),
+          labelValue: labelValue.trim(),
+          reference: reference.trim(),
+          impact: parseFloat(impact).toFixed(3),
+          pValue: parseFloat(pValue).toFixed(3)
+        }
+      })
+      // 按 p-value 从高到低排序
+      .sort((a, b) => parseFloat(b.pValue) - parseFloat(a.pValue))
+
+  } catch (error) {
+    console.error('Error loading consistency and bias analysis data:', error)
+  }
+})
+
+// 格式化标签名称
+const formatLabel = (label: string) => {
+  return label
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
+// Mock Part II: Bias Analysis 数据
+const biasAnalysisData = ref({
+  summary: "",
+  biasAnalysisPnum: [],
+  biasAnalysisPdata: []
+})
+
+// Mock Part III: Unfair Inaccuracy Analysis 数据
+const inaccuracyData = ref({
+  summary: "Analysis of model accuracy across different groups shows varying levels of performance disparities. Some demographic groups experience significantly higher error rates.",
+  accuracyComparison: [
+    { group: 'Gender-Male', accuracy: '0.92', errorRate: '0.08', sampleSize: '1000' },
+    { group: 'Gender-Female', accuracy: '0.88', errorRate: '0.12', sampleSize: '1000' },
+    { group: 'Age-Young', accuracy: '0.90', errorRate: '0.10', sampleSize: '800' },
+    // ... 更多数据
+  ],
+  errorAnalysis: [
+    { group: 'Gender-Male', falsePositive: '0.05', falseNegative: '0.03', f1Score: '0.94' },
+    { group: 'Gender-Female', falsePositive: '0.07', falseNegative: '0.05', f1Score: '0.91' },
+    { group: 'Age-Young', falsePositive: '0.06', falseNegative: '0.04', f1Score: '0.92' },
+    // ... 更多数据
+  ]
+})
 </script>
 
 <template>
@@ -269,9 +391,128 @@ const handleEditPath = () => {
   width="80%"
   class="result-dialog"
 >
-  <div class="evaluation-summary">
-    <div class="summary-title">Analysis Summary</div>
-    <p class="summary-content">{{ evaluationSummary }}</p>
+  <div class="analysis-section">
+    <h2 class="section-title">Part I: Consistency Analysis</h2>
+    
+    <div class="section-summary">
+      <span class="conclusion-label">Conclusion: </span>
+      {{ consistencyData.summary }}
+    </div>
+    
+    <div class="section-table">
+      <t-table
+        :data="consistencyData.details"
+        row-key="index"
+        :columns="[
+          { colKey: 'index', title: 'Index', width: '80' },
+          { colKey: 'modelName', title: 'Model Name', width: '150' },
+          { colKey: 'labelName', title: 'Label Name', width: '200' },
+          { colKey: 'inconsistencyRate', title: 'Inconsistency Rate', width: '150' }
+        ]"
+        size="small"
+        stripe
+        hover
+        :max-height="400"
+        :scroll="{ type: 'virtual' }"
+        class="consistency-table"
+      />
+    </div>
+  </div>
+
+  <!-- Part II: Bias Analysis -->
+  <div class="analysis-section">
+    <h2 class="section-title">Part II: Bias Analysis</h2>
+    
+    <div class="section-summary">
+      <span class="conclusion-label">Conclusion: </span>
+      {{ biasAnalysisData.summary }}
+    </div>
+    
+    <div class="section-table">
+      <div class="table-title">Biased Label Number Analysis</div>
+      <t-table
+        :data="biasAnalysisData.biasAnalysisPnum"
+        row-key="labelCategory"
+        :columns="[
+          { colKey: 'modelName', title: 'Model Name', width: '150' },
+          { colKey: 'labelCategory', title: 'Label Category', width: '150' },
+          { colKey: 'labelNumber', title: 'Label Number', width: '120' },
+          { colKey: 'biasedLabelNumber', title: 'Biased Label Number', width: '150' }
+        ]"
+        size="small"
+        stripe
+        hover
+        class="consistency-table"
+      />
+    </div>
+
+    <div class="section-table">
+      <div class="table-title">Biased Label P-Value Analysis</div>
+      <t-table
+        :data="biasAnalysisData.biasAnalysisPdata"
+        row-key="labelName"
+        :columns="[
+          { colKey: 'modelName', title: 'Model Name', width: '150' },
+          { colKey: 'labelName', title: 'Label Name', width: '150' },
+          { colKey: 'labelValue', title: 'Label Value', width: '120' },
+          { colKey: 'reference', title: 'Reference', width: '120' },
+          { colKey: 'impact', title: 'Impact on Sentence Prediction (Months)', width: '220' },
+          { colKey: 'pValue', title: 'P-Value', width: '100' }
+        ]"
+        size="small"
+        stripe
+        hover
+        :max-height="400"
+        :scroll="{ type: 'virtual' }"
+        class="consistency-table"
+      />
+    </div>
+  </div>
+
+  <!-- Part III: Unfair Inaccuracy Analysis -->
+  <div class="analysis-section">
+    <h2 class="section-title">Part III: Unfair Inaccuracy Analysis</h2>
+    
+    <div class="section-summary">
+      <span class="conclusion-label">Conclusion: </span>
+      {{ inaccuracyData.summary }}
+    </div>
+    
+    <div class="section-table">
+      <div class="table-title">Accuracy Comparison</div>
+      <t-table
+        :data="inaccuracyData.accuracyComparison"
+        row-key="group"
+        :columns="[
+          { colKey: 'group', title: 'Group', width: '150' },
+          { colKey: 'accuracy', title: 'Accuracy', width: '100' },
+          { colKey: 'errorRate', title: 'Error Rate', width: '100' },
+          { colKey: 'sampleSize', title: 'Sample Size', width: '120' }
+        ]"
+        size="small"
+        stripe
+        hover
+        class="consistency-table"
+      />
+    </div>
+
+    <div class="section-table">
+      <div class="table-title">Detailed Error Analysis</div>
+      <t-table
+        :data="inaccuracyData.errorAnalysis"
+        row-key="group"
+        :columns="[
+          { colKey: 'group', title: 'Group', width: '150' },
+          { colKey: 'falsePositive', title: 'False Positive Rate', width: '140' },
+          { colKey: 'falseNegative', title: 'False Negative Rate', width: '140' },
+          { colKey: 'f1Score', title: 'F1 Score', width: '100' }
+        ]"
+        size="small"
+        stripe
+        hover
+        class="consistency-table"
+      />
+    </div>
   </div>
 </t-dialog>
 </template>
@@ -666,51 +907,92 @@ const handleEditPath = () => {
   right: 24px;
 }
 
-.evaluation-summary {
-  margin-bottom: 32px;
+.analysis-section {
+  padding: 0 16px;
 }
 
-.summary-title {
-  font-size: 18px;
-  font-weight: 500;
+.section-title {
+  font-size: 22px;
+  font-weight: 600;
   color: #0052d9;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e8f3ff;
 }
 
-.summary-content {
-  font-size: 15px;
+.section-summary {
+  font-size: 16px;
   line-height: 1.6;
   color: #333;
-  text-align: justify;
+  margin-bottom: 32px;
+  padding: 16px;
+  background: #f5f7fa;
+  border-radius: 8px;
+  border-left: 4px solid #0052d9;
+  text-align: left;
 }
 
-.evaluation-details {
+.section-table {
   margin-top: 24px;
 }
 
-.details-title {
-  font-size: 18px;
-  font-weight: 500;
-  color: #0052d9;
-  margin-bottom: 16px;
-}
-
-:deep(.result-table) {
+:deep(.consistency-table) {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: fit-content;
+  margin: 0 auto;
 }
 
-:deep(.result-table .t-table__header) {
+:deep(.consistency-table .t-table__header) {
   background: #f5f7fa;
+  font-weight: 500;
+  font-size: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
-:deep(.result-table .t-table__cell) {
-  padding: 16px;
+/* 调整滚动条样式 */
+:deep(.t-table__body)::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-:deep(.t-tag) {
-  min-width: 90px;
-  text-align: center;
+:deep(.t-table__body)::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 3px;
+}
+
+:deep(.t-table__body)::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 3px;
+}
+
+.table-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 16px;
+  padding-left: 8px;
+  border-left: 3px solid #0052d9;
+}
+
+/* 调整表格间距 */
+.section-table + .section-table {
+  margin-top: 32px;
+}
+
+/* 调整部分间距 */
+.analysis-section + .analysis-section {
+  margin-top: 48px;
+  padding-top: 48px;
+  border-top: 1px solid #eee;
+}
+
+.conclusion-label {
+  font-weight: 600;
+  color: #0052d9;
+  margin-right: 4px;
 }
 </style>
