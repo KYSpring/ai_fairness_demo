@@ -353,10 +353,13 @@ const startScrollAnimation = () => {
   scrollInterval.value = setInterval(() => {
     scrollOffset.value += 1
     // 当滚动到底部时重置
-    if (scrollOffset.value > (analysisDimensions.value.length * 40)) {
-      scrollOffset.value = 0
+    if (scrollOffset.value > (analysisDimensions.value.length * 32)) {  // 调整为标签高度
+      // 重置位置，实现无缝循环
+      setTimeout(() => {
+        scrollOffset.value = 0
+      }, 500)  // 给一个小延迟，使过渡更平滑
     }
-  }, 50) // 控制滚动速度
+  }, 50)  // 控制滚动速度
 }
 
 // 鼠标悬停时暂停滚动
@@ -512,11 +515,17 @@ const resumeScroll = () => {
 <div class="dimensions-container">
   <div class="dimensions-title">Analysis Dimensions:</div>
   <div class="dimensions-tags-wrapper">
-    <div class="dimensions-tags" :style="{ transform: `translateY(-${scrollOffset}px)` }">
+    <div 
+      class="dimensions-tags" 
+      :style="{ transform: `translateY(-${scrollOffset}px)` }"
+      @mouseenter="pauseScroll"
+      @mouseleave="resumeScroll"
+    >
+      <!-- 在开头重复一组标签，用于无缝循环 -->
       <t-tag
-        v-for="(dimension, index) in analysisDimensions"
-        :key="dimension"
-        :theme="tagColors[index]"
+        v-for="(dimension, index) in [...analysisDimensions, ...analysisDimensions]"
+        :key="`${dimension}-${index}`"
+        :theme="tagColors[index % tagColors.length]"
         variant="light"
         class="dimension-tag"
       >
@@ -996,9 +1005,16 @@ const resumeScroll = () => {
 }
 
 .dimensions-tags-wrapper {
-  height: 200px; /* 限制显示高度 */
+  height: 200px;
   overflow: hidden;
   position: relative;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );  /* 添加渐隐效果 */
 }
 
 .dimensions-tags {
@@ -1007,17 +1023,17 @@ const resumeScroll = () => {
   gap: 8px;
   justify-content: flex-start;
   transition: transform 0.5s linear;
-  padding-right: 16px; /* 防止标签靠近右边缘 */
-}
-
-.dimensions-tags:hover {
-  animation-play-state: paused;
+  padding-right: 16px;
+  will-change: transform;  /* 优化动画性能 */
 }
 
 .dimension-tag {
   transition: all 0.3s ease;
   cursor: default;
-  margin-bottom: 8px; /* 增加标签之间的垂直间距 */
+  margin-bottom: 8px;
+  height: 32px;  /* 固定标签高度 */
+  display: flex;
+  align-items: center;
 }
 
 /* 添加渐变遮罩效果 */
