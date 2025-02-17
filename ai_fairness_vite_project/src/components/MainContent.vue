@@ -552,7 +552,7 @@ const resumeScroll = () => {
     <h2 class="section-title">Part I: Consistency Analysis</h2>
     
     <div class="section-summary">
-      <span class="conclusion-label">Conclusion: </span>
+      <div class="conclusion-label">Conclusion:</div>
       {{ consistencyData.summary }}
     </div>
     
@@ -581,7 +581,7 @@ const resumeScroll = () => {
     <h2 class="section-title">Part II: Bias Analysis</h2>
     
     <div class="section-summary">
-      <span class="conclusion-label">Conclusion: </span>
+      <div class="conclusion-label">Conclusion:</div>
       {{ biasAnalysisData.summary }}
     </div>
     
@@ -631,7 +631,7 @@ const resumeScroll = () => {
     <h2 class="section-title">Part III: Unfair Inaccuracy Analysis</h2>
     
     <div class="section-summary">
-      <span class="conclusion-label">Conclusion: </span>
+      <div class="conclusion-label">Conclusion:</div>
       {{ inaccuracyData.summary }}
     </div>
     
@@ -1048,10 +1048,26 @@ const resumeScroll = () => {
   pointer-events: none;
 }
 
+.section-summary {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  margin: 24px 0 32px;
+  padding: 20px 24px;
+  background: #f5f7fa;
+  border-radius: 8px;
+  border-left: 4px solid #0052d9;
+  text-align: left;
+  white-space: pre-line;
+}
+
 .conclusion-label {
+  display: inline-block;
   font-weight: 600;
   color: #0052d9;
-  margin-right: 4px;
+  margin-bottom: 8px;
+  font-size: 15px;
+  letter-spacing: 0.5px;
 }
 
 :deep(.t-form__item--required .t-form__label) {
@@ -1087,5 +1103,34 @@ const resumeScroll = () => {
 
 :deep(.path-input-content .t-button) {
   flex-shrink: 0;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #0052d9;
+  margin: 40px 0 24px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #e8f3ff;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, #0052d9, #00a6ff);
+}
+
+.table-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  margin: 24px 0 16px;
+  padding-left: 12px;
+  border-left: 4px solid #0052d9;
 }
 </style>
