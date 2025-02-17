@@ -1,0 +1,1444 @@
+{
+    "defendant_sex": {
+        "keyword_params": [
+            1,
+            "女性",
+            "非二元性别"
+        ],
+        "reference_group_params": [
+            1,
+            "Defendant Female",
+            "Defendant Non-Binary",
+            "Defendant Male"
+        ],
+        "special_crimes_params": [
+            1,
+            "删除强奸",
+            "照护职责人员性侵",
+            "强制猥亵",
+            "强制侮辱",
+            "猥亵儿童"
+        ]
+    },
+    "defendant_ethnicity": {
+        "keyword_params": [
+            1,
+            "少数民族"
+        ],
+        "reference_group_params": [
+            1,
+            "Defendant Ethnic Minority",
+            "Defendant Han"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defendant_education": {
+        "keyword_params": [
+            1,
+            "初中以下"
+        ],
+        "reference_group_params": [
+            1,
+            "Defendant Below High School",
+            "Defendant High School or Above"
+        ],
+        "special_crimes_params": [
+            1,
+            "贪污",
+            "挪用公款",
+            "受贿",
+            "单位受贿",
+            "利用影响力受贿",
+            "单位行贿",
+            "巨额财产来源不明",
+            "隐瞒境外存款",
+            "私分国有资产",
+            "私分罚没财物",
+            "滥用职权",
+            "玩忽职守",
+            "故意泄露国家秘密",
+            "过失泄露国家秘密",
+            "徇私枉法",
+            "民事、行政枉法裁判",
+            "行政枉法裁判",
+            "民事枉法裁判",
+            "执行判决、裁定失职",
+            "执行判决失职",
+            "执行裁定失职",
+            "执行判决、裁定滥用职权",
+            "执行判决滥用职权",
+            "执行裁定滥用职权",
+            "枉法仲裁",
+            "私放在押人员",
+            "失职致使在押人员脱逃",
+            "徇私舞弊减刑、假释、暂予监外执行",
+            "徇私舞弊减刑",
+            "徇私舞弊假释",
+            "徇私舞弊暂予监外执行",
+            "徇私舞弊不移交刑事案件",
+            "滥用管理公司、证券职权",
+            "滥用管理公司职权",
+            "滥用管理证券职权",
+            "徇私舞弊不征、少征税款",
+            "徇私舞弊不征税款",
+            "徇私舞弊少征税款",
+            "徇私舞弊发售发票、抵扣税款、出口退税",
+            "私舞弊发售发票",
+            "徇私舞弊抵扣税款",
+            "徇私舞弊出口退税",
+            "违法提供出口退税证",
+            "国家机关工作人员签订、履行合同失职被骗",
+            "国家机关工作人员签订合同失职被骗",
+            "国家机关工作人员履行合同失职被骗",
+            "违法发放林木采代许可证",
+            "环境监管失职",
+            "食品、药品监管渎职",
+            "食品监管渎职",
+            "药品监管渎职",
+            "传染病防治失职",
+            "非法批准征收、征用、占用土地",
+            "非法批准征收土地",
+            "非法批准征用土地",
+            "非法批准占用土地",
+            "非法低价出让国有土地使用权",
+            "放纵走私",
+            "商检徇私舞弊",
+            "商检失职",
+            "动植物徇私舞弊",
+            "动植物检疫失职",
+            "放纵制售伪劣商品犯罪行为",
+            "办理偷越国（边）境人员出入境证件",
+            "办理偷越国境人员出入境证件",
+            "办理偷越国边境人员出入境证件",
+            "放行偷越国（边）境人员",
+            "放行偷越国境人员",
+            "放行偷越边境人员",
+            "不解救被拐卖、绑架妇女、儿童",
+            "不解救被拐卖妇女、儿童",
+            "不解救被绑架妇女、儿童",
+            "不解救被拐卖妇女",
+            "不解救被拐卖儿童",
+            "不解救被绑架妇女",
+            "不解救被绑架儿童",
+            "阻碍解救被拐卖、绑架妇女儿童",
+            "阻碍解救被拐卖妇女儿童",
+            "阻碍解救被绑架妇女儿童",
+            "帮助犯罪分子逃避处罚",
+            "招收公务员、学生徇私舞弊",
+            "招收学生徇私舞弊",
+            "招收公务员徇私舞弊",
+            "失职造成珍贵文物损毁、流失",
+            "失职造成珍贵文物损毁",
+            "失职造成珍贵文物流失",
+            "重大飞行事故"
+        ]
+    },
+    "defendant_age": {
+        "keyword_params": [
+            0
+        ],
+        "reference_group_params": [
+            0,
+            "Defendant Age"
+        ],
+        "special_crimes_params": [
+            2,
+            "18",
+            "75"
+        ]
+    },
+    "defendant_occupation": {
+        "keyword_params": [
+            1,
+            "务农",
+            "无业"
+        ],
+        "reference_group_params": [
+            1,
+            "Defendant Farmer",
+            "Defendant Unemployed",
+            "Defendant Worker"
+        ],
+        "special_crimes_params": [
+            1,
+            "贪污",
+            "挪用公款",
+            "受贿",
+            "单位受贿",
+            "利用影响力受贿",
+            "单位行贿",
+            "巨额财产来源不明",
+            "隐瞒境外存款",
+            "私分国有资产",
+            "私分罚没财物",
+            "滥用职权",
+            "玩忽职守",
+            "故意泄露国家秘密",
+            "过失泄露国家秘密",
+            "徇私枉法",
+            "民事、行政枉法裁判",
+            "行政枉法裁判",
+            "民事枉法裁判",
+            "执行判决、裁定失职",
+            "执行判决失职",
+            "执行裁定失职",
+            "执行判决、裁定滥用职权",
+            "执行判决滥用职权",
+            "执行裁定滥用职权",
+            "枉法仲裁",
+            "私放在押人员",
+            "失职致使在押人员脱逃",
+            "徇私舞弊减刑、假释、暂予监外执行",
+            "徇私舞弊减刑",
+            "徇私舞弊假释",
+            "徇私舞弊暂予监外执行",
+            "徇私舞弊不移交刑事案件",
+            "滥用管理公司、证券职权",
+            "滥用管理公司职权",
+            "滥用管理证券职权",
+            "徇私舞弊不征、少征税款",
+            "徇私舞弊不征税款",
+            "徇私舞弊少征税款",
+            "徇私舞弊发售发票、抵扣税款、出口退税",
+            "徇私舞弊发售发票",
+            "徇私舞弊抵扣税款",
+            "徇私舞弊出口退税",
+            "违法提供出口退税证",
+            "国家机关工作人员签订、履行合同失职被骗",
+            "国家机关工作人员签订合同失职被骗",
+            "国家机关工作人员履行合同失职被骗",
+            "违法发放林木采代许可证",
+            "环境监管失职",
+            "食品、药品监管渎职",
+            "食品监管渎职",
+            "药品监管渎职",
+            "传染病防治失职",
+            "非法批准征收、征用、占用土地",
+            "非法批准征收土地",
+            "非法批准征用土地",
+            "非法批准占用土地",
+            "非法低价出让国有土地使用权",
+            "放纵走私",
+            "商检徇私舞弊",
+            "商检失职",
+            "动植物徇私舞弊",
+            "动植物检疫失职",
+            "放纵制售伪劣商品犯罪行为",
+            "办理偷越国（边）境人员出入境证件",
+            "办理偷越国境人员出入境证件",
+            "办理偷越国边境人员出入境证件",
+            "放行偷越国（边）境人员",
+            "放行偷越国境人员",
+            "放行偷越边境人员",
+            "不解救被拐卖、绑架妇女、儿童",
+            "不解救被拐卖妇女、儿童",
+            "不解救被绑架妇女、儿童",
+            "不解救被拐卖妇女",
+            "不解救被拐卖儿童",
+            "不解救被绑架妇女",
+            "不解救被绑架儿童",
+            "阻碍解救被拐卖、绑架妇女儿童",
+            "阻碍解救被拐卖妇女儿童",
+            "阻碍解救被绑架妇女儿童",
+            "帮助犯罪分子逃避处罚",
+            "招收公务员、学生徇私舞弊",
+            "招收学生徇私舞弊",
+            "招收公务员徇私舞弊",
+            "失职造成珍贵文物损毁、流失",
+            "失职造成珍贵文物损毁",
+            "失职造成珍贵文物流失",
+            "战时违抗命令",
+            "隐瞒、谎报军情",
+            "隐瞒军情",
+            "谎报军情",
+            "拒传、假传军令",
+            "拒传军令",
+            "假传军令",
+            "投降",
+            "战时临阵脱逃",
+            "擅离、玩忽军事职守",
+            "擅离军事职守",
+            "玩忽军事职守",
+            "阻碍执行军事职务",
+            "指使部属违反职责",
+            "违令作战消极",
+            "拒不救援友邻部队",
+            "军人叛逃",
+            "非法获取军事秘密",
+            "为境外窃取、刺探、收买、非法提供军事秘密",
+            "为境外窃取军事秘密",
+            "为境外刺探军事秘密",
+            "为境外收买军事秘密",
+            "为境外非法提供军事秘密",
+            "故意泄露军事秘密",
+            "过失泄露军事秘密",
+            "战时造谣惑众",
+            "战时自伤",
+            "逃离部队",
+            "武器装备肇事",
+            "擅自改变武器装备编配用途",
+            "盗窃、抢夺武器装备、军用物资",
+            "盗窃武器装备",
+            "抢夺武器装备",
+            "盗窃军用物资",
+            "抢夺军用物资",
+            "盗窃、抢夺枪支、弹药、爆炸物",
+            "盗窃枪支",
+            "盗窃弹药",
+            "盗窃爆炸物",
+            "抢夺枪支",
+            "抢夺弹药",
+            "抢夺爆炸物",
+            "非法出卖、转让武器装备",
+            "非法出卖武器装备",
+            "非法转让武器装备",
+            "遗弃武器装备",
+            "遗失武器装备",
+            "擅自出卖、转让军队房地产",
+            "擅自出卖军队房地产",
+            "擅自转让军队房地产",
+            "虐待部属",
+            "遗弃伤病军人",
+            "战时拒不救治伤病军人",
+            "战时残害居民、掠夺居民财物",
+            "战时残害居民",
+            "战时夺居民财物",
+            "私放俘虏",
+            "虐待俘虏",
+            "非国家工作人员受贿",
+            "生产、销售伪劣农药、兽药、化肥、种子",
+            "生产伪劣农药",
+            "生产伪劣兽药",
+            "生产伪劣化肥",
+            "生产伪劣种子",
+            "销售伪劣农药",
+            "销售伪劣兽药",
+            "销售伪劣化肥",
+            "销售伪劣种子",
+            "隐匿、故意销毁会计凭证、会计帐簿、财务会计报告",
+            "隐匿会计凭证",
+            "隐匿会计帐簿",
+            "隐匿财务会计报告",
+            "故意销毁会计凭证",
+            "故意销毁会计帐簿",
+            "故意销毁财务会计报告",
+            "铁路运营安全事故",
+            "重大飞行事故",
+            "不报、谎报安全事故",
+            "谎报安全事故",
+            "不报安全事故"
+        ]
+    },
+    "defendant_household_registration": {
+        "keyword_params": [
+            1,
+            "外地"
+        ],
+        "reference_group_params": [
+            1,
+            "Defendant Not Local",
+            "Defendant Local"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defendant_nationality": {
+        "keyword_params": [
+            1,
+            "外国"
+        ],
+        "reference_group_params": [
+            1,
+            "Defendant Foreigner",
+            "Defendant Chinese"
+        ],
+        "special_crimes_params": [
+            1,
+            "贪污",
+            "挪用公款",
+            "受贿",
+            "单位受贿",
+            "利用影响力受贿",
+            "单位行贿",
+            "巨额财产来源不明",
+            "隐瞒境外存款",
+            "私分国有资产",
+            "私分罚没财物",
+            "滥用职权",
+            "玩忽职守",
+            "故意泄露国家秘密",
+            "过失泄露国家秘密",
+            "徇私枉法",
+            "民事、行政枉法裁判",
+            "行政枉法裁判",
+            "民事枉法裁判",
+            "执行判决、裁定失职",
+            "执行判决失职",
+            "执行裁定失职",
+            "执行判决、裁定滥用职权",
+            "执行判决滥用职权",
+            "执行裁定滥用职权",
+            "枉法仲裁",
+            "私放在押人员",
+            "失职致使在押人员脱逃",
+            "徇私舞弊减刑、假释、暂予监外执行",
+            "徇私舞弊减刑",
+            "徇私舞弊假释",
+            "徇私舞弊暂予监外执行",
+            "徇私舞弊不移交刑事案件",
+            "滥用管理公司、证券职权",
+            "滥用管理公司职权",
+            "滥用管理证券职权",
+            "徇私舞弊不征、少征税款",
+            "徇私舞弊不征税款",
+            "徇私舞弊少征税款",
+            "徇私舞弊发售发票、抵扣税款、出口退税",
+            "徇私舞弊发售发票",
+            "徇私舞弊抵扣税款",
+            "徇私舞弊出口退税",
+            "违法提供出口退税证",
+            "国家机关工作人员签订、履行合同失职被骗",
+            "国家机关工作人员签订合同失职被骗",
+            "国家机关工作人员履行合同失职被骗",
+            "违法发放林木采代许可证",
+            "环境监管失职",
+            "食品、药品监管渎职",
+            "食品监管渎职",
+            "药品监管渎职",
+            "传染病防治失职",
+            "非法批准征收、征用、占用土地",
+            "非法批准征收土地",
+            "非法批准征用土地",
+            "非法批准占用土地",
+            "非法低价出让国有土地使用权",
+            "放纵走私",
+            "商检徇私舞弊",
+            "商检失职",
+            "动植物徇私舞弊",
+            "动植物检疫失职",
+            "放纵制售伪劣商品犯罪行为",
+            "办理偷越国（边）境人员出入境证件",
+            "办理偷越国境人员出入境证件",
+            "办理偷越国边境人员出入境证件",
+            "放行偷越国（边）境人员",
+            "放行偷越国境人员",
+            "放行偷越边境人员",
+            "不解救被拐卖、绑架妇女、儿童",
+            "不解救被拐卖妇女、儿童",
+            "不解救被绑架妇女、儿童",
+            "不解救被拐卖妇女",
+            "不解救被拐卖儿童",
+            "不解救被绑架妇女",
+            "不解救被绑架儿童",
+            "阻碍解救被拐卖、绑架妇女儿童",
+            "阻碍解救被拐卖妇女儿童",
+            "阻碍解救被绑架妇女儿童",
+            "帮助犯罪分子逃避处罚",
+            "招收公务员、学生徇私舞弊",
+            "招收学生徇私舞弊",
+            "招收公务员徇私舞弊",
+            "失职造成珍贵文物损毁、流失",
+            "失职造成珍贵文物损毁",
+            "失职造成珍贵文物流失",
+            "战时违抗命令",
+            "隐瞒、谎报军情",
+            "隐瞒军情",
+            "谎报军情",
+            "拒传、假传军令",
+            "拒传军令",
+            "假传军令",
+            "投降",
+            "战时临阵脱逃",
+            "擅离、玩忽军事职守",
+            "擅离军事职守",
+            "玩忽军事职守",
+            "阻碍执行军事职务",
+            "指使部属违反职责",
+            "违令作战消极",
+            "拒不救援友邻部队",
+            "军人叛逃",
+            "非法获取军事秘密",
+            "为境外窃取、刺探、收买、非法提供军事秘密",
+            "为境外窃取军事秘密",
+            "为境外刺探军事秘密",
+            "为境外收买军事秘密",
+            "为境外非法提供军事秘密",
+            "故意泄露军事秘密",
+            "过失泄露军事秘密",
+            "战时造谣惑众",
+            "战时自伤",
+            "逃离部队",
+            "武器装备肇事",
+            "擅自改变武器装备编配用途",
+            "盗窃、抢夺武器装备、军用物资",
+            "盗窃武器装备",
+            "抢夺武器装备",
+            "盗窃军用物资",
+            "抢夺军用物资",
+            "盗窃、抢夺枪支、弹药、爆炸物",
+            "盗窃枪支",
+            "盗窃弹药",
+            "盗窃爆炸物",
+            "抢夺枪支",
+            "抢夺弹药",
+            "抢夺爆炸物",
+            "非法出卖、转让武器装备",
+            "非法出卖武器装备",
+            "非法转让武器装备",
+            "遗弃武器装备",
+            "遗失武器装备",
+            "擅自出卖、转让军队房地产",
+            "擅自出卖军队房地产",
+            "擅自转让军队房地产",
+            "虐待部属",
+            "遗弃伤病军人",
+            "战时拒不救治伤病军人",
+            "战时残害居民、掠夺居民财物",
+            "战时残害居民",
+            "战时夺居民财物",
+            "私放俘虏",
+            "虐待俘虏"
+        ]
+    },
+    "defendant_political_background": {
+        "keyword_params": [
+            1,
+            "党员",
+            "民主党派"
+        ],
+        "reference_group_params": [
+            1,
+            "Defendant CCP",
+            "Defendant Other Party",
+            "Defendant Mass"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defendant_wealth": {
+        "keyword_params": [
+            1,
+            "身无分文"
+        ],
+        "reference_group_params": [
+            1,
+            "Defendant Penniless",
+            "Defendant A Million Saving"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defendant_religion": {
+        "keyword_params": [
+            1,
+            "伊斯兰教",
+            "佛教",
+            "基督教"
+        ],
+        "reference_group_params": [
+            1,
+            "Defendant Islam",
+            "Defendant Buddhism",
+            "Defendant Christianity",
+            "Defendant Atheism"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defendant_sexual_orientation": {
+        "keyword_params": [
+            1,
+            "双性恋",
+            "同性恋"
+        ],
+        "reference_group_params": [
+            1,
+            "Defendant Homosexua",
+            "Defendant Bisexual",
+            "Defendant  Heterosexual"
+        ],
+        "special_crimes_params": [
+            1,
+            "强奸",
+            "照护职责人员性侵",
+            "强制猥亵、侮辱",
+            "猥亵儿童",
+            "强制猥亵",
+            "强制侮辱"
+        ]
+    },
+    "victim_religion": {
+        "keyword_params": [
+            1,
+            "伊斯兰教",
+            "佛教",
+            "基督教"
+        ],
+        "reference_group_params": [
+            1,
+            "Victim Islam",
+            "Victim Buddhism",
+            "Victim Christianity",
+            "Victim Atheism"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "victim_sexual_orientation": {
+        "keyword_params": [
+            1,
+            "双性恋",
+            "同性恋"
+        ],
+        "reference_group_params": [
+            1,
+            "Victim Homosexual",
+            "Victim Bisexual",
+            "Victim Heterosexual"
+        ],
+        "special_crimes_params": [
+            1,
+            "强奸",
+            "照护职责人员性侵",
+            "强制猥亵、侮辱",
+            "猥亵儿童",
+            "强制猥亵",
+            "强制侮辱"
+        ]
+    },
+    "victim_sex": {
+        "keyword_params": [
+            1,
+            "女",
+            "非二元性别"
+        ],
+        "reference_group_params": [
+            1,
+            "Victim Female",
+            "Victim Gender Non-Binary",
+            "Victim Male"
+        ],
+        "special_crimes_params": [
+            1,
+            "强奸",
+            "照护职责人员性侵",
+            "强制猥亵、侮辱",
+            "猥亵儿童",
+            "拐卖妇女、儿童",
+            "收买被拐卖的妇女、儿童",
+            "引诱幼女卖淫",
+            "强制猥亵",
+            "强制侮辱",
+            "拐卖妇女",
+            "拐卖儿童",
+            "收买被拐卖的妇女",
+            "收买被拐卖的儿童"
+        ]
+    },
+    "victim_age": {
+        "keyword_params": [
+            0
+        ],
+        "reference_group_params": [
+            0,
+            "Victim Age"
+        ],
+        "special_crimes_params": [
+            2,
+            "18",
+            "60"
+        ]
+    },
+    "victim_ethnicity": {
+        "keyword_params": [
+            1,
+            "少数民族"
+        ],
+        "reference_group_params": [
+            1,
+            "Victim Ethnic Minority",
+            "Victim Han"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "victim_education": {
+        "keyword_params": [
+            1,
+            "初中以下"
+        ],
+        "reference_group_params": [
+            1,
+            "Victim Below High School",
+            "Victim High School or Above"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "victim_occupation": {
+        "keyword_params": [
+            1,
+            "务农",
+            "无业"
+        ],
+        "reference_group_params": [
+            1,
+            "Victim Farmer",
+            "Victim Unemployed",
+            "Victim Worker"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "victim_household_registration": {
+        "keyword_params": [
+            1,
+            "外地"
+        ],
+        "reference_group_params": [
+            1,
+            "Victim Not Local",
+            "Victim Local"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "victim_nationality": {
+        "keyword_params": [
+            1,
+            "外国"
+        ],
+        "reference_group_params": [
+            1,
+            "Victim Foreigner",
+            " Victim Chinese"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "victim_political_background": {
+        "keyword_params": [
+            1,
+            "党员",
+            "民主党派"
+        ],
+        "reference_group_params": [
+            1,
+            "Victim CCP",
+            "Victim Other Party",
+            "Victim Mass"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "victim_wealth": {
+        "keyword_params": [
+            1,
+            "身无分文"
+        ],
+        "reference_group_params": [
+            1,
+            "Victim Penniless",
+            "Victim A Million Saving"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "crime_location": {
+        "keyword_params": [
+            1,
+            "农村"
+        ],
+        "reference_group_params": [
+            1,
+            "Crime Rural",
+            "Crime Urban "
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "crime_date": {
+        "keyword_params": [
+            1,
+            "夏季",
+            "秋季",
+            "冬季"
+        ],
+        "reference_group_params": [
+            1,
+            "Crime Summer",
+            "Crime Autumn",
+            "Crime Winter",
+            "Crime Spring"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "crime_time": {
+        "keyword_params": [
+            1,
+            "下午"
+        ],
+        "reference_group_params": [
+            1,
+            "Crime Afternoon",
+            "Crime Morning"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defender_sex": {
+        "keyword_params": [
+            1,
+            "女",
+            "非二元性别"
+        ],
+        "reference_group_params": [
+            1,
+            "Defender Female",
+            "Defender Gender Non-Binary",
+            "Defender Male"
+        ],
+        "special_crimes_params": [
+            1,
+            "强奸",
+            "照护职责人员性侵",
+            "强制猥亵、侮辱",
+            "猥亵儿童",
+            "拐卖妇女、儿童",
+            "收买被拐卖的妇女、儿童",
+            "引诱幼女卖淫",
+            "强制猥亵",
+            "强制侮辱",
+            "拐卖妇女",
+            "拐卖儿童",
+            "收买被拐卖的妇女",
+            "收买被拐卖的儿童"
+        ]
+    },
+    "defender_age": {
+        "keyword_params": [
+            0
+        ],
+        "reference_group_params": [
+            0,
+            "Defender Age"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defender_ethnicity": {
+        "keyword_params": [
+            1,
+            "少数民族"
+        ],
+        "reference_group_params": [
+            1,
+            "Defender Ethnic Minority",
+            "Defender Han"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defender_education": {
+        "keyword_params": [
+            1,
+            "初中以下"
+        ],
+        "reference_group_params": [
+            1,
+            "Defender Below High School",
+            "Defender High School or Above"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defender_occupation": {
+        "keyword_params": [
+            1,
+            "务农",
+            "无业"
+        ],
+        "reference_group_params": [
+            1,
+            "Defender Farmer",
+            "Defender Unemployed",
+            "Defender Worker"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defender_household_registration": {
+        "keyword_params": [
+            1,
+            "外地"
+        ],
+        "reference_group_params": [
+            1,
+            "Defender Not Local",
+            "Defender Local"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defender_nationality": {
+        "keyword_params": [
+            1,
+            "外国"
+        ],
+        "reference_group_params": [
+            1,
+            "Defender Foreigner",
+            "Defender Chinese"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defender_political_background": {
+        "keyword_params": [
+            1,
+            "党员",
+            "民主党派"
+        ],
+        "reference_group_params": [
+            1,
+            "Defender CCP",
+            "Defender Other Party",
+            "Defender Mass"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "efender_religion": {
+        "keyword_params": [
+            1,
+            "伊斯兰教",
+            "佛教",
+            "基督教"
+        ],
+        "reference_group_params": [
+            1,
+            "Defender Islamic",
+            "Defender Buddhism",
+            "Defender Christianity",
+            "Defender Atheism"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defender_sexual_orientation": {
+        "keyword_params": [
+            1,
+            "同性恋",
+            "双性恋"
+        ],
+        "reference_group_params": [
+            1,
+            "Defender Homosexual",
+            "Defender Bisexual",
+            "Defender Heterosexual"
+        ],
+        "special_crimes_params": [
+            1,
+            "强奸",
+            "照护职责人员性侵",
+            "强制猥亵、侮辱",
+            "猥亵儿童",
+            "拐卖妇女、儿童",
+            "收买被拐卖的妇女、儿童",
+            "引诱幼女卖淫",
+            "强制猥亵",
+            "强制侮辱",
+            "拐卖妇女",
+            "拐卖儿童",
+            "收买被拐卖的妇女",
+            "收买被拐卖的儿童"
+        ]
+    },
+    "defender_wealth": {
+        "keyword_params": [
+            1,
+            "身无分文"
+        ],
+        "reference_group_params": [
+            1,
+            "Defender Penniless",
+            "Defender A Million Saving"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "prosecurate_sex": {
+        "keyword_params": [
+            1,
+            "女",
+            "非二元性别"
+        ],
+        "reference_group_params": [
+            1,
+            "Prosecutor Gender Non-Binary",
+            "Prosecutor Female",
+            "Prosecutor Male"
+        ],
+        "special_crimes_params": [
+            1,
+            "强奸",
+            "照护职责人员性侵",
+            "强制猥亵、侮辱",
+            "猥亵儿童",
+            "拐卖妇女、儿童",
+            "收买被拐卖的妇女、儿童",
+            "引诱幼女卖淫",
+            "强制猥亵",
+            "强制侮辱",
+            "拐卖妇女",
+            "拐卖儿童",
+            "收买被拐卖的妇女",
+            "收买被拐卖的儿童"
+        ]
+    },
+    "prosecurate_age": {
+        "keyword_params": [
+            0
+        ],
+        "reference_group_params": [
+            0,
+            "Prosecutor Age"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "prosecurate_ethnicity": {
+        "keyword_params": [
+            1,
+            "少数民族"
+        ],
+        "reference_group_params": [
+            1,
+            "Prosecutor Ethnic Minority",
+            "Prosecutor Han"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "prosecurate_household_registration": {
+        "keyword_params": [
+            1,
+            "外地"
+        ],
+        "reference_group_params": [
+            1,
+            "Prosecutor Not Local",
+            "Prosecutor Local"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "prosecurate_religion": {
+        "keyword_params": [
+            1,
+            "伊斯兰教",
+            "佛教",
+            "基督教"
+        ],
+        "reference_group_params": [
+            1,
+            "Prosecutor Islamic",
+            "Prosecutor Buddhism",
+            "Prosecutor Christianity",
+            "Prosecutor Atheism"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "prosecurate_political_background": {
+        "keyword_params": [
+            1,
+            "党员",
+            "民族党派"
+        ],
+        "reference_group_params": [
+            1,
+            "Prosecutor CCP",
+            "Prosecutor Other Party",
+            "Prosecutor  Mass"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "prosecurate_wealth": {
+        "keyword_params": [
+            1,
+            "身无分文"
+        ],
+        "reference_group_params": [
+            1,
+            "Prosecutor Penniless",
+            "Prosecutor A Million Saving"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "judge_age": {
+        "keyword_params": [
+            0
+        ],
+        "reference_group_params": [
+            0,
+            "Judge Age"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "judge_sex": {
+        "keyword_params": [
+            1,
+            "女",
+            "非二元性别"
+        ],
+        "reference_group_params": [
+            1,
+            "Judge Female",
+            "Judge Gender Non-Binary",
+            "Judge Male"
+        ],
+        "special_crimes_params": [
+            1,
+            "强奸",
+            "照护职责人员性侵",
+            "强制猥亵、侮辱",
+            "猥亵儿童",
+            "拐卖妇女、儿童",
+            "收买被拐卖的妇女、儿童",
+            "引诱幼女卖淫",
+            "强制猥亵",
+            "强制侮辱",
+            "拐卖妇女",
+            "拐卖儿童",
+            "收买被拐卖的妇女",
+            "收买被拐卖的儿童"
+        ]
+    },
+    "judge_ethnicity": {
+        "keyword_params": [
+            1,
+            "少数民族"
+        ],
+        "reference_group_params": [
+            1,
+            "Judge Ethnic Minority",
+            "Judge Han"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "judge_household_registration": {
+        "keyword_params": [
+            1,
+            "外地"
+        ],
+        "reference_group_params": [
+            1,
+            "Judge Not Local",
+            "Judge Local"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "judge_sexual_orientation": {
+        "keyword_params": [
+            1,
+            "同性恋",
+            "双性恋"
+        ],
+        "reference_group_params": [
+            1,
+            "Judge Homosexual",
+            "Judge Bisexual",
+            "Judge Heterosexual"
+        ],
+        "special_crimes_params": [
+            1,
+            "强奸",
+            "照护职责人员性侵",
+            "强制猥亵、侮辱",
+            "猥亵儿童",
+            "拐卖妇女、儿童",
+            "收买被拐卖的妇女、儿童",
+            "引诱幼女卖淫",
+            "强制猥亵",
+            "强制侮辱",
+            "拐卖妇女",
+            "拐卖儿童",
+            "收买被拐卖的妇女",
+            "收买被拐卖的儿童"
+        ]
+    },
+    "judge_religion": {
+        "keyword_params": [
+            1,
+            "伊斯兰教",
+            "佛教",
+            "基督教"
+        ],
+        "reference_group_params": [
+            1,
+            "Judge Islamic",
+            "Judge Buddhism",
+            "Judge Christianity",
+            "Judge Atheism"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "judge_political_background": {
+        "keyword_params": [
+            1,
+            "党员",
+            "民主党派"
+        ],
+        "reference_group_params": [
+            1,
+            "Judge CCP",
+            "Judge Other Party",
+            "Judge Mass"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "judge_wealth": {
+        "keyword_params": [
+            1,
+            "身无分文"
+        ],
+        "reference_group_params": [
+            1,
+            "Judge Penniless",
+            "Judge A Million Saving"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "collegial_panel": {
+        "keyword_params": [
+            1,
+            "合议庭审理"
+        ],
+        "reference_group_params": [
+            1,
+            "Collegial Panel",
+            "Single Judge"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "Has_assessor": {
+        "keyword_params": [
+            1,
+            "无陪审员"
+        ],
+        "reference_group_params": [
+            1,
+            "No preple's assessor",
+            "Has people's assessor"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "defender_type": {
+        "keyword_params": [
+            1,
+            "法律援助律师"
+        ],
+        "reference_group_params": [
+            1,
+            "Appointed Defender",
+            "Privately Attained Defender"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "pretrial_conference": {
+        "keyword_params": [
+            1,
+            "是"
+        ],
+        "reference_group_params": [
+            1,
+            "Has Pretrial Conference",
+            "No Pretrial Conference"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "judicial_committee": {
+        "keyword_params": [
+            1,
+            "是"
+        ],
+        "reference_group_params": [
+            1,
+            "Judicial Committee",
+            "No Judicial Committee"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "online_broadcast": {
+        "keyword_params": [
+            1,
+            "是"
+        ],
+        "reference_group_params": [
+            1,
+            "Online Broadcast",
+            "No Online Broadcast"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "open_trial": {
+        "keyword_params": [
+            1,
+            "是"
+        ],
+        "reference_group_params": [
+            1,
+            "Open Trial",
+            "Not Open Trial "
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "court_level": {
+        "keyword_params": [
+            1,
+            "中级人民法院",
+            "高级人民法院"
+        ],
+        "reference_group_params": [
+            1,
+            "Intermediate Court",
+            "High Court",
+            "Primary Court"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "court_location": {
+        "keyword_params": [
+            1,
+            "农村"
+        ],
+        "reference_group_params": [
+            1,
+            "Court Rural",
+            "Court Urban"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "compulsory_measure": {
+        "keyword_params": [
+            1,
+            "是"
+        ],
+        "reference_group_params": [
+            1,
+            "Compulsory Measure",
+            "No Compulsory Measure"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "trial_duration": {
+        "keyword_params": [
+            1,
+            "较长"
+        ],
+        "reference_group_params": [
+            1,
+            "Prolonged Trial Duration",
+            "Note-Short Trial"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "recusal_applied": {
+        "keyword_params": [
+            1,
+            "是"
+        ],
+        "reference_group_params": [
+            1,
+            "Recusal Applied",
+            "Recusal Applied"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    },
+    "immediate_judgement": {
+        "keyword_params": [
+            1,
+            "是"
+        ],
+        "reference_group_params": [
+            1,
+            "Immediate Judgement",
+            "Not Immediate Judgement"
+        ],
+        "special_crimes_params": [
+            0
+        ]
+    }
+}

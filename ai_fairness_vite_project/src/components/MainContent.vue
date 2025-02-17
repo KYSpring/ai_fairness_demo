@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { FileIcon, PlayCircleIcon, UploadIcon, CloudIcon, EditIcon } from 'tdesign-icons-vue-next';
 import { MessagePlugin } from 'tdesign-vue-next';
 
@@ -13,8 +13,9 @@ const formData = ref({
 })
 
 const localData = ref({
-  file: null,
-  path: ''
+  files: [] as File[],  // 支持多文件
+  fileNames: [] as string[],  // 存储文件名
+  path: ''  // 保留路径输入
 })
 
 const resultPath = ref('~/Desktop/fairness_evaluation_results')
@@ -23,14 +24,26 @@ const tempPath = ref('')
 
 // Mock 分析维度标签数据
 const analysisDimensions = ref([
-  'Gender Bias', 'Age Discrimination', 'Racial Bias', 'Religious Bias',
-  'Socioeconomic Bias', 'Educational Bias', 'Geographic Bias', 'Language Bias',
-  'Cultural Bias', 'Political Bias', 'Disability Bias', 'Appearance Bias',
-  'Nationality Bias', 'Sexual Orientation', 'Marital Status', 'Occupation Bias',
-  'Income Level Bias', 'Health Status Bias', 'Family Status', 'Accent Bias',
-  'Name Origin Bias', 'Social Class Bias', 'Ethnic Bias', 'Age Group Bias',
-  'Veteran Status', 'Citizenship Status', 'Immigration Status', 'Language Proficiency',
-  'Digital Literacy', 'Educational Access'
+  'defendant_sex', 'defendant_ethnicity', 'defendant_education', 'defendant_age',
+  'defendant_occupation', 'defendant_household_registration', 'defendant_nationality',
+  'defendant_political_background', 'defendant_wealth', 'defendant_religion',
+  'defendant_sexual_orientation', 'victim_religion', 'victim_sexual_orientation',
+  'victim_sex', 'victim_age', 'victim_ethnicity', 'victim_education',
+  'victim_occupation', 'victim_household_registration', 'victim_nationality',
+  'victim_political_background', 'victim_wealth', 'crime_location', 'crime_date',
+  'crime_time', 'defender_sex', 'defender_age', 'defender_ethnicity',
+  'defender_education', 'defender_occupation', 'defender_household_registration',
+  'defender_nationality', 'defender_political_background', 'defender_religion',
+  'defender_sexual_orientation', 'defender_wealth', 'prosecurate_sex',
+  'prosecurate_age', 'prosecurate_ethnicity', 'prosecurate_household_registration',
+  'prosecurate_sexual_orientation', 'prosecurate_religion',
+  'prosecurate_political_background', 'prosecurate_wealth', 'judge_age',
+  'judge_sex', 'judge_ethnicity', 'judge_household_registration',
+  'judge_sexual_orientation', 'judge_religion', 'judge_political_background',
+  'judge_wealth', 'collegial_panel', 'Has_assessor', 'defender_type',
+  'pretrial_conference', 'judicial_committee', 'online_broadcast', 'open_trial',
+  'court_level', 'court_location', 'compulsory_measure', 'trial_duration',
+  'recusal_applied', 'immediate_judgement'
 ])
 
 const isEvaluating = ref(false)
@@ -50,11 +63,35 @@ const handleModeChange = (value: string) => {
   uploadMode.value = value
 }
 
-const handleFileUpload = (file: File) => {
-  console.log('Uploaded file:', file)
+const handleFileUpload = (files: File[]) => {
+  localData.value.files = files
+  localData.value.fileNames = files.map(file => file.name)
+  
+  MessagePlugin.success({
+    content: 'Files uploaded successfully',
+    duration: 2000,
+    style: {
+      background: '#f0f9eb',
+      border: '1px solid #67c23a',
+      borderRadius: '4px',
+      padding: '8px 16px',
+      boxShadow: '0 2px 12px rgba(0,0,0,0.1)'
+    }
+  });
+}
+
+// 添加表单验证规则
+const rules = {
+  api_url: [{ required: true, message: 'API URL is required', type: 'error' }],
+  model_name: [{ required: true, message: 'Model Name is required', type: 'error' }]
 }
 
 const handleSaveConfig = () => {
+  if (!formData.value.api_url || !formData.value.model_name) {
+    MessagePlugin.error('Please fill in all required fields');
+    return;
+  }
+  
   MessagePlugin.success({
     content: 'Configuration saved successfully',
     duration: 2000,
@@ -69,6 +106,11 @@ const handleSaveConfig = () => {
 }
 
 const handleConfirmPath = () => {
+  if (!localData.value.path) {
+    MessagePlugin.error('Please enter a valid path');
+    return;
+  }
+  
   MessagePlugin.success({
     content: 'Local path confirmed successfully',
     duration: 2000,
@@ -166,7 +208,7 @@ onMounted(async () => {
     // 读取 Bias_Analysis_Pnum.csv
     const pnumResponse = await fetch('/data/Bias_Analysis_Pnum.csv')
     const pnumText = await pnumResponse.text()
-    const pnumRows = pnumText.split('\n').slice(1) // 跳过标题行
+    const pnumRows = pnumText.split('\n').slice(1)
     
     biasAnalysisData.value.biasAnalysisPnum = pnumRows
       .filter(row => row.trim())
@@ -180,17 +222,14 @@ onMounted(async () => {
         }
       })
 
-    // 计算总的有偏见标签数量
-    const totalBiasedLabels = biasAnalysisData.value.biasAnalysisPnum.reduce(
+    // 计算偏见分析的总标签数量
+    const biasedLabelsCount = biasAnalysisData.value.biasAnalysisPnum.reduce(
       (sum, item) => sum + item.biasedLabelNumber, 
       0
     )
     
-    // 获取模型名称
-    // const modelName = biasAnalysisData.value.biasAnalysisPnum[0].modelName
-
-    // 更新 summary
-    biasAnalysisData.value.summary = `The fairness analysis of ${modelName} shows that among all 65 labels, ${totalBiasedLabels} labels demonstrate significant bias.`
+    // 更新偏见分析 summary
+    biasAnalysisData.value.summary = `The fairness analysis of ${modelName} shows that among all 65 labels, ${biasedLabelsCount} labels demonstrate significant bias.`
 
     // 读取 Bias_Analysis_P.csv
     const pResponse = await fetch('/data/Bias_Analysis_P.csv')
@@ -213,8 +252,61 @@ onMounted(async () => {
       // 按 p-value 从高到低排序
       .sort((a, b) => parseFloat(b.pValue) - parseFloat(a.pValue))
 
+    // 读取 df_dict.json
+    const dfDictResponse = await fetch('/data/df_dict.json')
+    const dfDict = await dfDictResponse.json()
+    const { avg_mae, avg_mape } = dfDict[0]
+
+    // 读取 inaccuracy_results_Pnum.csv
+    const inaccuracyPnumResponse = await fetch('/data/inaccuracy_results_Pnum.csv')
+    const inaccuracyPnumText = await inaccuracyPnumResponse.text()
+    const inaccuracyPnumRows = inaccuracyPnumText.split('\n').slice(1)
+    
+    inaccuracyData.value.inaccuracyPnum = inaccuracyPnumRows
+      .filter(row => row.trim())
+      .map(row => {
+        const [modelName, labelCategory, labelNumber, biasedLabelNumber] = row.split(',')
+        return {
+          modelName,
+          labelCategory,
+          labelNumber: parseInt(labelNumber),
+          biasedLabelNumber: parseInt(biasedLabelNumber)
+        }
+      })
+
+    // 计算不公平性分析的总标签数量
+    const inaccuracyLabelsCount = inaccuracyData.value.inaccuracyPnum.reduce(
+      (sum, item) => sum + item.biasedLabelNumber, 
+      0
+    )
+
+    // 更新不公平性分析 summary
+    inaccuracyData.value.summary = `1. The weighted average MAE (Mean Absolute Error) per label is ${avg_mae.toFixed(2)}, and the weighted average MAPE (Mean Absolute Percentage Error) is ${avg_mape.toFixed(2)}.
+2. Among all 65 labels, ${inaccuracyLabelsCount} labels show significant differences in sentencing prediction errors due to different label values.`
+
+    // 读取 inaccuracy_p.csv
+    const inaccuracyPResponse = await fetch('/data/inaccuracy_p.csv')
+    const inaccuracyPText = await inaccuracyPResponse.text()
+    const inaccuracyPRows = inaccuracyPText.split('\n').slice(1) // 跳过标题行
+    
+    inaccuracyData.value.inaccuracyPValue = inaccuracyPRows
+      .filter(row => row.trim())
+      .map(row => {
+        const [modelName, labelName, labelValue, reference, impact, pValue] = row.split(',')
+        return {
+          modelName,
+          labelName: formatLabel(labelName),
+          labelValue: labelValue.trim(),
+          reference: reference.trim(),
+          impact: parseFloat(impact).toFixed(3),
+          pValue: parseFloat(pValue).toFixed(3)
+        }
+      })
+      // 按 p-value 从高到低排序
+      .sort((a, b) => parseFloat(b.pValue) - parseFloat(a.pValue))
+
   } catch (error) {
-    console.error('Error loading consistency and bias analysis data:', error)
+    console.error('Error loading analysis data:', error)
   }
 })
 
@@ -236,19 +328,51 @@ const biasAnalysisData = ref({
 // Mock Part III: Unfair Inaccuracy Analysis 数据
 const inaccuracyData = ref({
   summary: "Analysis of model accuracy across different groups shows varying levels of performance disparities. Some demographic groups experience significantly higher error rates.",
-  accuracyComparison: [
-    { group: 'Gender-Male', accuracy: '0.92', errorRate: '0.08', sampleSize: '1000' },
-    { group: 'Gender-Female', accuracy: '0.88', errorRate: '0.12', sampleSize: '1000' },
-    { group: 'Age-Young', accuracy: '0.90', errorRate: '0.10', sampleSize: '800' },
-    // ... 更多数据
-  ],
-  errorAnalysis: [
-    { group: 'Gender-Male', falsePositive: '0.05', falseNegative: '0.03', f1Score: '0.94' },
-    { group: 'Gender-Female', falsePositive: '0.07', falseNegative: '0.05', f1Score: '0.91' },
-    { group: 'Age-Young', falsePositive: '0.06', falseNegative: '0.04', f1Score: '0.92' },
-    // ... 更多数据
-  ]
+  inaccuracyPnum: [],
+  inaccuracyPValue: []
 })
+
+// 添加滚动动画相关的响应式变量
+const scrollOffset = ref(0)
+const scrollInterval = ref<number | null>(null)
+
+// 在组件挂载时启动滚动动画
+onMounted(() => {
+  startScrollAnimation()
+})
+
+// 在组件卸载时清除定时器
+onUnmounted(() => {
+  if (scrollInterval.value) {
+    clearInterval(scrollInterval.value)
+  }
+})
+
+// 滚动动画函数
+const startScrollAnimation = () => {
+  scrollInterval.value = setInterval(() => {
+    scrollOffset.value += 1
+    // 当滚动到底部时重置
+    if (scrollOffset.value > (analysisDimensions.value.length * 40)) {
+      scrollOffset.value = 0
+    }
+  }, 50) // 控制滚动速度
+}
+
+// 鼠标悬停时暂停滚动
+const pauseScroll = () => {
+  if (scrollInterval.value) {
+    clearInterval(scrollInterval.value)
+    scrollInterval.value = null
+  }
+}
+
+// 鼠标离开时恢复滚动
+const resumeScroll = () => {
+  if (!scrollInterval.value) {
+    startScrollAnimation()
+  }
+}
 </script>
 
 <template>
@@ -285,11 +409,11 @@ const inaccuracyData = ref({
 
 <div class="upload-content">
   <!-- 自动生成模式 -->
-  <t-form v-if="uploadMode === 'auto'" :data="formData" class="form-content">
-    <t-form-item label="API URL">
+  <t-form v-if="uploadMode === 'auto'" :data="formData" :rules="rules" class="form-content">
+    <t-form-item label="API URL" name="api_url">
       <t-input v-model="formData.api_url" placeholder="Enter API URL" />
     </t-form-item>
-    <t-form-item label="Model Name">
+    <t-form-item label="Model Name" name="model_name">
       <t-input v-model="formData.model_name" placeholder="Enter Model Name" />
     </t-form-item>
     <t-form-item label="Provider Name">
@@ -300,26 +424,43 @@ const inaccuracyData = ref({
 
 
   <!-- 本地数据模式 -->
-  <div v-else class="manual-upload">
+  <div v-if="uploadMode === 'manual'" >
     <t-upload
-      v-model="localData.file"
-      theme="custom"
-      :draggable="true"
-      action="/"
+      v-model="localData.files"
+      :multiple="true"
+      accept="application/json"
+      :auto-upload="false"
       @change="handleFileUpload"
+      class="upload-trigger"
+      theme="custom"
+      draggable
     >
-      <template #default>
+      <template #dragContent>
         <div class="upload-drag-area">
-          <UploadIcon size="24px" />
-          <p>Click or drag file to upload</p>
-          <p class="upload-hint">Support .json file format</p>
+          <UploadIcon size="32px" style="color: #0052d9; margin-bottom: 8px" />
+          <p>Click or drag JSON files to this area to upload</p>
         </div>
       </template>
     </t-upload>
-    
+
+    <!-- 显示已上传的文件名 -->
+    <div v-if="localData.fileNames.length > 0" class="uploaded-files">
+      <div class="uploaded-files-title">Uploaded Files:</div>
+      <div class="file-list">
+        <div v-for="fileName in localData.fileNames" :key="fileName" class="file-item">
+          <FileIcon size="16px" style="color: #0052d9" />
+          <span>{{ fileName }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 添加路径输入部分 -->
     <div class="path-input">
-      <t-input v-model="localData.path" placeholder="Or enter local file path" />
-      <t-button theme="primary" style="margin-left: 16px" @click="handleConfirmPath">Confirm</t-button>
+      <div class="path-input-title">Or enter local file path:</div>
+      <div class="path-input-content">
+        <t-input v-model="localData.path" placeholder="Enter local file path" />
+        <t-button theme="primary" @click="handleConfirmPath">Confirm</t-button>
+      </div>
     </div>
   </div>
 </div>
@@ -329,20 +470,6 @@ const inaccuracyData = ref({
   <span>Step 2: Start LLM Fairness Analysis</span>
 </div>
 
-<div class="dimensions-container">
-  <div class="dimensions-title">Analysis Dimensions:</div>
-  <div class="dimensions-tags">
-    <t-tag
-      v-for="(dimension, index) in analysisDimensions"
-      :key="dimension"
-      :theme="tagColors[index]"
-      variant="light"
-      class="dimension-tag"
-    >
-      {{ dimension }}
-    </t-tag>
-  </div>
-</div>
 
 <div class="evaluation-container">
   <div class="evaluation-content">
@@ -378,6 +505,24 @@ const inaccuracyData = ref({
   <div v-else class="result-path-edit">
     <t-input v-model="tempPath" placeholder="Enter custom path" />
     <t-button theme="primary" size="small" @click="handleEditPath">Save</t-button>
+  </div>
+</div>
+
+
+<div class="dimensions-container">
+  <div class="dimensions-title">Analysis Dimensions:</div>
+  <div class="dimensions-tags-wrapper">
+    <div class="dimensions-tags" :style="{ transform: `translateY(-${scrollOffset}px)` }">
+      <t-tag
+        v-for="(dimension, index) in analysisDimensions"
+        :key="dimension"
+        :theme="tagColors[index]"
+        variant="light"
+        class="dimension-tag"
+      >
+        {{ dimension }}
+      </t-tag>
+    </div>
   </div>
 </div>
 
@@ -482,15 +627,15 @@ const inaccuracyData = ref({
     </div>
     
     <div class="section-table">
-      <div class="table-title">Accuracy Comparison</div>
+      <div class="table-title">Label Category Analysis</div>
       <t-table
-        :data="inaccuracyData.accuracyComparison"
-        row-key="group"
+        :data="inaccuracyData.inaccuracyPnum"
+        row-key="labelCategory"
         :columns="[
-          { colKey: 'group', title: 'Group', width: '150' },
-          { colKey: 'accuracy', title: 'Accuracy', width: '100' },
-          { colKey: 'errorRate', title: 'Error Rate', width: '100' },
-          { colKey: 'sampleSize', title: 'Sample Size', width: '120' }
+          { colKey: 'modelName', title: 'Model Name', width: '150' },
+          { colKey: 'labelCategory', title: 'Label Category', width: '150' },
+          { colKey: 'labelNumber', title: 'Label Number', width: '120' },
+          { colKey: 'biasedLabelNumber', title: 'Biased Label Number', width: '150' }
         ]"
         size="small"
         stripe
@@ -500,19 +645,23 @@ const inaccuracyData = ref({
     </div>
 
     <div class="section-table">
-      <div class="table-title">Detailed Error Analysis</div>
+      <div class="table-title">Detailed P-Value Analysis</div>
       <t-table
-        :data="inaccuracyData.errorAnalysis"
-        row-key="group"
+        :data="inaccuracyData.inaccuracyPValue"
+        row-key="labelName"
         :columns="[
-          { colKey: 'group', title: 'Group', width: '150' },
-          { colKey: 'falsePositive', title: 'False Positive Rate', width: '140' },
-          { colKey: 'falseNegative', title: 'False Negative Rate', width: '140' },
-          { colKey: 'f1Score', title: 'F1 Score', width: '100' }
+          { colKey: 'modelName', title: 'Model Name', width: '150' },
+          { colKey: 'labelName', title: 'Label Name', width: '150' },
+          { colKey: 'labelValue', title: 'Label Value', width: '120' },
+          { colKey: 'reference', title: 'Reference', width: '120' },
+          { colKey: 'impact', title: 'Impact on Sentence Prediction (Months)', width: '220' },
+          { colKey: 'pValue', title: 'P-Value', width: '100' }
         ]"
         size="small"
         stripe
         hover
+        :max-height="400"
+        :scroll="{ type: 'virtual' }"
         class="consistency-table"
       />
     </div>
@@ -601,45 +750,65 @@ const inaccuracyData = ref({
 }
 
 .upload-drag-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 32px;
-  border: 2px dashed #dcdcdc;
-  border-radius: 6px;
-  text-align: center;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+  transition: all 0.3s ease;
   cursor: pointer;
-  transition: all 0.3s;
 }
 
 .upload-drag-area:hover {
   border-color: #0052d9;
-  background: #f5f5f5;
+  background: #f5f7fa;
 }
 
-.upload-hint {
-  color: #999;
+.upload-drag-area p {
+  margin: 0;
+  color: #666;
   font-size: 14px;
-  margin-top: 8px;
 }
 
-.path-input {
+.uploaded-files {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f5f7fa;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.uploaded-files-title {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-item {
   display: flex;
   align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-:deep(.t-upload__dragger) {
-  width: 100%;
-  border: none;
-  padding: 0;
-  height: auto !important;
-  overflow: visible !important;
+.file-item span {
+  color: #333;
+  font-size: 14px;
 }
 
-:deep(.t-upload-dragger__content) {
-  height: auto !important;
-}
-
-:deep(.t-upload__tips) {
-  display: none;
-}
 .save-config-button {
   margin-top: 24px;
 }
@@ -681,6 +850,12 @@ const inaccuracyData = ref({
   transition: all 0.03s linear;
   background: linear-gradient(90deg, #0052d9, #00a6ff);
 }
+
+:deep(.t-upload__dragger) {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 
 .start-button {
   position: relative;
@@ -806,7 +981,6 @@ const inaccuracyData = ref({
 }
 
 .dimensions-container {
-  max-width: 800px;
   margin: 20px auto;
   padding: 16px 24px;
   background: #fff;
@@ -821,180 +995,81 @@ const inaccuracyData = ref({
   margin-bottom: 16px;
 }
 
+.dimensions-tags-wrapper {
+  height: 200px; /* 限制显示高度 */
+  overflow: hidden;
+  position: relative;
+}
+
 .dimensions-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   justify-content: flex-start;
+  transition: transform 0.5s linear;
+  padding-right: 16px; /* 防止标签靠近右边缘 */
+}
+
+.dimensions-tags:hover {
+  animation-play-state: paused;
 }
 
 .dimension-tag {
   transition: all 0.3s ease;
   cursor: default;
+  margin-bottom: 8px; /* 增加标签之间的垂直间距 */
 }
 
-.dimension-tag:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 4px rgba(0, 82, 217, 0.1);
-}
-
-:deep(.dimension-tag.t-tag) {
-  padding: 6px 12px;
-  border-radius: 16px;
-}
-
-:deep(.dimension-tag.t-tag--light) {
-  border: none;
-}
-
-:deep(.dimension-tag.t-tag--primary.t-tag--light) {
-  background-color: rgba(0, 82, 217, 0.1);
-}
-
-:deep(.dimension-tag.t-tag--success.t-tag--light) {
-  background-color: rgba(0, 171, 88, 0.1);
-}
-
-:deep(.dimension-tag.t-tag--warning.t-tag--light) {
-  background-color: rgba(255, 171, 0, 0.1);
-}
-
-:deep(.dimension-tag.t-tag--error.t-tag--light) {
-  background-color: rgba(227, 77, 89, 0.1);
-}
-
-:deep(.dimension-tag.t-tag--default.t-tag--light) {
-  background-color: rgba(96, 98, 102, 0.1);
-}
-
-:deep(.dimension-tag.t-tag--primary.t-tag--light:hover) {
-  background-color: rgba(0, 82, 217, 0.15);
-}
-
-:deep(.dimension-tag.t-tag--success.t-tag--light:hover) {
-  background-color: rgba(0, 171, 88, 0.15);
-}
-
-:deep(.dimension-tag.t-tag--warning.t-tag--light:hover) {
-  background-color: rgba(255, 171, 0, 0.15);
-}
-
-:deep(.dimension-tag.t-tag--error.t-tag--light:hover) {
-  background-color: rgba(227, 77, 89, 0.15);
-}
-
-:deep(.dimension-tag.t-tag--default.t-tag--light:hover) {
-  background-color: rgba(96, 98, 102, 0.15);
-}
-
-:deep(.result-dialog) {
-  max-width: 1200px;
-}
-
-:deep(.result-dialog .t-dialog__header) {
-  font-size: 24px;
-  font-weight: 500;
-  color: #0052d9;
-  padding: 24px;
-  border-bottom: 1px solid #eee;
-}
-
-:deep(.result-dialog .t-dialog__body) {
-  padding: 24px;
-  min-height: 400px;
-}
-
-:deep(.result-dialog .t-dialog__close) {
-  top: 24px;
-  right: 24px;
-}
-
-.analysis-section {
-  padding: 0 16px;
-}
-
-.section-title {
-  font-size: 22px;
-  font-weight: 600;
-  color: #0052d9;
-  margin-bottom: 24px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #e8f3ff;
-}
-
-.section-summary {
-  font-size: 16px;
-  line-height: 1.6;
-  color: #333;
-  margin-bottom: 32px;
-  padding: 16px;
-  background: #f5f7fa;
-  border-radius: 8px;
-  border-left: 4px solid #0052d9;
-  text-align: left;
-}
-
-.section-table {
-  margin-top: 24px;
-}
-
-:deep(.consistency-table) {
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  width: fit-content;
-  margin: 0 auto;
-}
-
-:deep(.consistency-table .t-table__header) {
-  background: #f5f7fa;
-  font-weight: 500;
-  font-size: 14px;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
-
-/* 调整滚动条样式 */
-:deep(.t-table__body)::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-:deep(.t-table__body)::-webkit-scrollbar-thumb {
-  background: #ddd;
-  border-radius: 3px;
-}
-
-:deep(.t-table__body)::-webkit-scrollbar-track {
-  background: #f5f5f5;
-  border-radius: 3px;
-}
-
-.table-title {
-  font-size: 16px;
-  font-weight: 500;
-  color: #666;
-  margin-bottom: 16px;
-  padding-left: 8px;
-  border-left: 3px solid #0052d9;
-}
-
-/* 调整表格间距 */
-.section-table + .section-table {
-  margin-top: 32px;
-}
-
-/* 调整部分间距 */
-.analysis-section + .analysis-section {
-  margin-top: 48px;
-  padding-top: 48px;
-  border-top: 1px solid #eee;
+/* 添加渐变遮罩效果 */
+.dimensions-tags-wrapper::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, #fff);
+  pointer-events: none;
 }
 
 .conclusion-label {
   font-weight: 600;
   color: #0052d9;
   margin-right: 4px;
+}
+
+:deep(.t-form__item--required .t-form__label) {
+  position: relative;
+}
+
+:deep(.t-form__item--required .t-form__label::before) {
+  content: '*';
+  color: #e34d59;
+  margin-right: 4px;
+}
+
+.path-input {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px dashed #ddd;
+}
+
+.path-input-title {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.path-input-content {
+  display: flex;
+  gap: 16px;
+}
+
+:deep(.path-input-content .t-input) {
+  flex: 1;
+}
+
+:deep(.path-input-content .t-button) {
+  flex-shrink: 0;
 }
 </style>
