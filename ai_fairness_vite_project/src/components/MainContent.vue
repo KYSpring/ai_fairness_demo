@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { FileIcon, PlayCircleIcon, UploadIcon, CloudIcon, EditIcon } from 'tdesign-icons-vue-next';
+import { FileIcon, PlayCircleIcon, UploadIcon, CloudIcon, EditIcon, AddIcon } from 'tdesign-icons-vue-next';
 import { MessagePlugin } from 'tdesign-vue-next';
 
 defineProps<{ msg: string }>()
@@ -58,10 +58,37 @@ const tagColors = ref(analysisDimensions.value.map(() =>
 ))
 
 const showResultDialog = ref(false)
+const showAddTagDialog = ref(false)
+const newTagName = ref('')
 
-const handleModeChange = (value: string) => {
-  uploadMode.value = value
+const handleAddTag = () => {
+  if (!newTagName.value.trim()) {
+    MessagePlugin.error('Tag name cannot be empty');
+    return;
+  }
+  
+  // 添加新标签
+  analysisDimensions.value.push(newTagName.value.trim())
+  // 为新标签分配随机颜色
+  tagColors.value.push(tagThemes[Math.floor(Math.random() * tagThemes.length)])
+  
+  MessagePlugin.success({
+    content: 'Tag added successfully',
+    duration: 2000,
+    style: {
+      background: '#f0f9eb',
+      border: '1px solid #67c23a',
+      borderRadius: '4px',
+      padding: '8px 16px',
+      boxShadow: '0 2px 12px rgba(0,0,0,0.1)'
+    }
+  });
+  
+  // 重置并关闭对话框
+  newTagName.value = ''
+  showAddTagDialog.value = false
 }
+
 
 const handleFileUpload = (files: File[]) => {
   localData.value.files = files
@@ -349,21 +376,53 @@ onUnmounted(() => {
 })
 
 // 滚动动画函数
-const startScrollAnimation = () => {
-  scrollInterval.value = setInterval(() => {
-    scrollOffset.value += 1
-    // 当滚动到底部时重置
-    if (scrollOffset.value > (analysisDimensions.value.length * 32)) {  // 调整为标签高度
-      // 重置位置，实现无缝循环
-      setTimeout(() => {
-        scrollOffset.value = 0
-      }, 500)  // 给一个小延迟，使过渡更平滑
-    }
-  }, 50)  // 控制滚动速度
+// 计算标签容器实际高度
+const calculateTotalHeight = () => {
+  const tagsContainer = document.querySelector('.dimensions-tags')
+  if (tagsContainer) {
+    // 获取第一组标签的高度（总高度的一半，因为我们复制了一组标签）
+    return tagsContainer.scrollHeight / 2
+  }
+  return analysisDimensions.value.length * 32 // fallback值
 }
+
+const startScrollAnimation = () => {
+  const totalHeight = calculateTotalHeight()
+  scrollInterval.value = setInterval(() => {
+    scrollOffset.value += 0.5
+    // 当滚动到一组标签的高度时重置
+    if (scrollOffset.value >= totalHeight) {
+      scrollOffset.value = 0 // 直接重置到开始位置
+    }
+  }, 100) // 降低滚动速度
+}
+
+// 监听窗口大小变化
+const handleResize = () => {
+  if (scrollInterval.value) {
+    clearInterval(scrollInterval.value)
+  }
+  scrollOffset.value = 0
+  startScrollAnimation()
+}
+
+// 在组件挂载时添加resize监听器
+onMounted(() => {
+  startScrollAnimation()
+  window.addEventListener('resize', handleResize)
+})
+
+// 在组件卸载时移除resize监听器
+onUnmounted(() => {
+  if (scrollInterval.value) {
+    clearInterval(scrollInterval.value)
+  }
+  window.removeEventListener('resize', handleResize)
+})
 
 // 鼠标悬停时暂停滚动
 const pauseScroll = () => {
+  console.log('Mouse enter - pausing scroll')
   if (scrollInterval.value) {
     clearInterval(scrollInterval.value)
     scrollInterval.value = null
@@ -372,6 +431,7 @@ const pauseScroll = () => {
 
 // 鼠标离开时恢复滚动
 const resumeScroll = () => {
+  console.log('Mouse leave - resuming scroll')
   if (!scrollInterval.value) {
     startScrollAnimation()
   }
@@ -513,13 +573,35 @@ const resumeScroll = () => {
 
 
 <div class="dimensions-container">
-  <div class="dimensions-title">Analysis Dimensions:</div>
-  <div class="dimensions-tags-wrapper">
+  <div class="dimensions-title">
+  Analysis Dimensions:
+  <t-button theme="default" shape="circle" variant="text" @click="showAddTagDialog = true">
+    <template #icon><AddIcon /></template>
+  </t-button>
+</div>
+
+<!-- 新增标签对话框 -->
+<t-dialog
+  v-model:visible="showAddTagDialog"
+  header="Add Analysis Dimension Tag"
+  :confirm-btn="{ content: 'Confirm', theme: 'primary' }"
+  :cancel-btn="{ content: 'Cancel' }"
+  @confirm="handleAddTag"
+>
+  <t-input
+    v-model="newTagName"
+    placeholder="Enter tag name"
+    clearable
+  />
+</t-dialog>
+  <div 
+    class="dimensions-tags-wrapper" 
+    @mouseenter="pauseScroll"
+    @mouseleave="resumeScroll"
+  >
     <div 
       class="dimensions-tags" 
       :style="{ transform: `translateY(-${scrollOffset}px)` }"
-      @mouseenter="pauseScroll"
-      @mouseleave="resumeScroll"
     >
       <!-- 在开头重复一组标签，用于无缝循环 -->
       <t-tag
@@ -1002,6 +1084,19 @@ const resumeScroll = () => {
   font-weight: 500;
   color: #333;
   margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dimensions-title .t-button {
+  margin-left: auto;
+  transition: all 0.3s ease;
+}
+
+.dimensions-title .t-button:hover {
+  transform: rotate(90deg);
+  color: #0052d9;
 }
 
 .dimensions-tags-wrapper {
@@ -1015,6 +1110,8 @@ const resumeScroll = () => {
     black 90%,
     transparent 100%
   );  /* 添加渐隐效果 */
+  z-index: 1;
+  pointer-events: auto;
 }
 
 .dimensions-tags {
@@ -1025,6 +1122,8 @@ const resumeScroll = () => {
   transition: transform 0.5s linear;
   padding-right: 16px;
   will-change: transform;  /* 优化动画性能 */
+  position: relative;
+  z-index: 2;
 }
 
 .dimension-tag {
