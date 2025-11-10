@@ -1,0 +1,14 @@
+Flask
+Flask-CORS
+gunicorn
+python-dotenv
+Flask-SQLAlchemy
+Flask-Migrate
+PyMySQL
+pystata
+pandas
+numpy
+scipy
+pystata
+openpyxl
+requests
